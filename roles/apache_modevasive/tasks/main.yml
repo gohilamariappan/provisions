@@ -1,0 +1,25 @@
+---
+ - name: install apache2modevasive
+   apt: name=libapache2-mod-evasive state=latest
+   become: yes
+
+
+ - name: enabled mod_evasive
+   apache2_module: name=evasive state=present
+   notify:
+      - restart apache2
+   become: yes
+
+
+ - name: copy the modevasive.conf
+   shell: |
+     cp -rpf modevasive.conf /etc/apache2/mods-available/mod-evasive.conf
+     touch /var/log/apache2/mod_evasive.log
+     chown www-data:www-data /var/log/apache2/mod_evasive.log
+
+   notify:
+      - restart apache2
+   become: yes
+
+
+
